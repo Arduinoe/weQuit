@@ -277,9 +277,9 @@
       </filter>
     </defs>
     <g id="wheel-g"></g>
-    <g id="center-g">
+    <g id="center-g" style="cursor:pointer" onclick="zoomOut()">
       <circle cx="250" cy="250" r="30" fill="var(--center-fill)" stroke="var(--center-stroke)" stroke-width="1.5"/>
-      <text x="250" y="254" text-anchor="middle"
+      <text id="center-label" x="250" y="254" text-anchor="middle"
         font-family="Roboto Mono" font-size="6"
         fill="var(--text-dim)" letter-spacing="0.2em">WEQUIT</text>
     </g>
@@ -480,6 +480,9 @@ function renderMonths() {
 
       const grp = document.createElementNS('http://www.w3.org/2000/svg','g');
       grp.setAttribute('class', `slice-group ${cssState}`);
+      if (cssState !== 'locked') {
+        grp.addEventListener('click', () => showWeeks(i));
+      }
 
       const path = document.createElementNS('http://www.w3.org/2000/svg','path');
       path.setAttribute('d', d);
@@ -540,6 +543,178 @@ function renderMonths() {
     g.style.transition = 'opacity 0.3s ease';
     g.style.opacity = '1';
   }, 200);
+}
+
+// ── Navigation state ──
+let navLevel = 'months';
+let navMonth = null;
+let navWeek  = null;
+
+const WEEK_NAMES  = ['W1','W2','W3','W4'];
+const DAY_NAMES   = ['LUN','MAR','MER','GIO','VEN','SAB','DOM'];
+const WEEK_RADII  = [210,192,220,198];
+const DAY_RADII   = [208,188,218,196,212,186,222];
+const RAW_W4 = [28,24,30,26];
+const RAW_W7 = [16,14,17,13,15,14,17];
+const WIDTHS4 = (() => { const s=RAW_W4.reduce((a,b)=>a+b,0); return RAW_W4.map(w=>w/s*(360-4*GAP_DEG)); })();
+const WIDTHS7 = (() => { const s=RAW_W7.reduce((a,b)=>a+b,0); return RAW_W7.map(w=>w/s*(360-7*GAP_DEG)); })();
+
+function setHint(text) {
+  document.querySelector('.hint').textContent = text;
+}
+function setCenterLabel(text) {
+  document.getElementById('center-label').textContent = text;
+}
+
+function renderSubWheel({ labels, radii, widths, currentIdx, onClickIdx }) {
+  const g = document.getElementById('wheel-g');
+  g.style.transition = 'opacity 0.18s ease';
+  g.style.opacity = '0';
+
+  setTimeout(() => {
+    g.innerHTML = '';
+    let angle = -90;
+
+    labels.forEach((label, i) => {
+      const s = angle + GAP_DEG/2;
+      const e = angle + widths[i] - GAP_DEG/2;
+      const m = (s+e)/2;
+      const outerR = radii[i % radii.length];
+      const cssState = i < currentIdx ? 'unlocked' : i === currentIdx ? 'current' : 'locked';
+      const d = petalPath(s, e, INNER_R, outerR);
+
+      const grp = document.createElementNS('http://www.w3.org/2000/svg','g');
+      grp.setAttribute('class', `slice-group ${cssState}`);
+      if (cssState !== 'locked' && onClickIdx) {
+        grp.addEventListener('click', () => onClickIdx(i));
+      }
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d', d);
+      path.setAttribute('fill', PALETTE[i % PALETTE.length]);
+      path.setAttribute('class','slice-path');
+      if (cssState === 'current') {
+        path.setAttribute('stroke','rgba(255,255,255,0.38)');
+        path.setAttribute('stroke-width','1');
+        path.setAttribute('filter','url(#glow-soft)');
+      }
+      grp.appendChild(path);
+
+      if (cssState !== 'locked') {
+        const gR = outerR - 16;
+        const sp = e - s;
+        const [g1x,g1y] = polar(gR, s + sp*0.22);
+        const [g2x,g2y] = polar(gR, e - sp*0.22);
+        const [gmx,gmy] = polar(gR+5, m);
+        const groove = document.createElementNS('http://www.w3.org/2000/svg','path');
+        groove.setAttribute('d',`M ${g1x} ${g1y} Q ${gmx} ${gmy} ${g2x} ${g2y}`);
+        groove.setAttribute('fill','none');
+        groove.setAttribute('stroke','rgba(255,255,255,0.15)');
+        groove.setAttribute('stroke-width','0.8');
+        groove.setAttribute('stroke-linecap','round');
+        grp.appendChild(groove);
+      }
+
+      const lR = outerR + 19;
+      const [lx,ly] = polar(lR, m);
+      const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+      txt.setAttribute('x',lx); txt.setAttribute('y',ly);
+      txt.setAttribute('text-anchor','middle');
+      txt.setAttribute('dominant-baseline','middle');
+      txt.setAttribute('class','slice-label');
+      txt.setAttribute('transform',`rotate(${m+90},${lx},${ly})`);
+      txt.setAttribute('fill',
+        cssState==='locked'  ? 'var(--text-dim)' :
+        cssState==='current' ? 'var(--text-white)' : 'var(--text-bright)');
+      txt.textContent = label;
+      grp.appendChild(txt);
+
+      if (cssState === 'current') {
+        const [dx,dy] = polar(outerR+7, m);
+        const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        dot.setAttribute('cx',dx); dot.setAttribute('cy',dy);
+        dot.setAttribute('r','3');
+        dot.setAttribute('fill','rgba(255,255,255,0.7)');
+        grp.appendChild(dot);
+      }
+
+      g.appendChild(grp);
+      angle += widths[i];
+    });
+
+    document.getElementById('center-g').parentNode.appendChild(document.getElementById('center-g'));
+    g.style.transition = 'opacity 0.3s ease';
+    g.style.opacity = '1';
+  }, 200);
+}
+
+function showWeeks(monthIdx) {
+  navLevel = 'weeks';
+  navMonth = monthIdx;
+
+  const now = new Date();
+  const qMonth = quitDate.getMonth();
+  const nMonth = now.getMonth();
+  const nYear  = now.getFullYear();
+  const qYear  = quitDate.getFullYear();
+
+  // How many full weeks elapsed since quit date
+  const daysElapsed = getDays();
+  const weeksSinceQuit = Math.floor(daysElapsed / 7);
+
+  // Which week within this month is current?
+  // monthIdx relative to quitMonth
+  const monthsAhead = (monthIdx - qMonth + 12) % 12;
+  const weeksIntoMonth = weeksSinceQuit - monthsAhead * 4;
+  let currentWeek = Math.min(3, weeksIntoMonth);
+  if (monthsAhead > Math.floor(daysElapsed / 30)) currentWeek = -1; // future month
+
+  setCenterLabel('2190');
+  setHint(`${MONTH_NAMES[monthIdx]} · tocca una settimana`);
+
+  renderSubWheel({
+    labels: WEEK_NAMES,
+    radii: WEEK_RADII,
+    widths: WIDTHS4,
+    currentIdx: currentWeek,
+    onClickIdx: (wi) => showDays(monthIdx, wi),
+  });
+}
+
+function showDays(monthIdx, weekIdx) {
+  navLevel = 'days';
+  navMonth = monthIdx;
+  navWeek  = weekIdx;
+
+  const daysElapsed = getDays();
+  const qMonth = quitDate.getMonth();
+  const monthsAhead = (monthIdx - qMonth + 12) % 12;
+  const weeksAhead = monthsAhead * 4 + weekIdx;
+  const daysIntoWeek = daysElapsed - weeksAhead * 7;
+  let currentDay = Math.min(6, daysIntoWeek);
+  if (daysIntoWeek < 0) currentDay = -1;
+
+  setCenterLabel('2190');
+  setHint(`${MONTH_NAMES[monthIdx]} · ${WEEK_NAMES[weekIdx]}`);
+
+  renderSubWheel({
+    labels: DAY_NAMES,
+    radii: DAY_RADII,
+    widths: WIDTHS7,
+    currentIdx: currentDay,
+    onClickIdx: null,
+  });
+}
+
+function zoomOut() {
+  if (navLevel === 'days') {
+    showWeeks(navMonth);
+  } else if (navLevel === 'weeks') {
+    navLevel = 'months';
+    setCenterLabel('WEQUIT');
+    setHint('tocca un mese');
+    renderMonths();
+  }
 }
 
 // ── Theme ──
