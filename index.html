@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>WeQuit</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -384,8 +384,45 @@ let currentTheme = localStorage.getItem('wq_theme') || 'black';
 function getDays() {
   return Math.max(0, Math.floor((new Date() - quitDate) / 86400000));
 }
-function getCurrentMonth() {
-  return Math.min(11, Math.floor(getDays() / 30));
+
+// Returns the state of month index i (0=GEN ... 11=DIC)
+// based on the real calendar month of quitDate vs today.
+function getMonthState(i) {
+  const now = new Date();
+  const quitMonth = quitDate.getMonth(); // 0-11, calendar month
+  const nowMonth  = now.getMonth();
+
+  // If quit year < current year, all months up to nowMonth are done
+  // For simplicity (1-year journey) we work within the same year range
+  const quitYear = quitDate.getFullYear();
+  const nowYear  = now.getFullYear();
+
+  // Convert i to an absolute month number for comparison
+  // The journey spans 12 calendar months starting from quitMonth
+  // i=0 is always GEN, so we compare calendar positions directly
+
+  if (i < quitMonth) {
+    // Before quit month in calendar — not part of journey yet (locked/pre)
+    return 'pre';
+  }
+  if (i === quitMonth) {
+    // The quit month itself
+    if (nowMonth > quitMonth || nowYear > quitYear) return 'unlocked';
+    return 'current';
+  }
+  // After quit month
+  if (nowYear > quitYear) {
+    // Next calendar year — all remaining months done if within journey
+    const monthsElapsed = (nowYear - quitYear) * 12 + nowMonth - quitMonth;
+    const monthsAhead = i - quitMonth;
+    if (monthsAhead < monthsElapsed) return 'unlocked';
+    if (monthsAhead === monthsElapsed) return 'current';
+    return 'locked';
+  }
+  // Same year, future month
+  if (i < nowMonth) return 'unlocked';
+  if (i === nowMonth) return 'current';
+  return 'locked';
 }
 
 // ── Geometry ──
@@ -424,7 +461,6 @@ function petalPath(startDeg, endDeg, innerR, outerR) {
 
 // ── Render ──
 function renderMonths() {
-  const cur = getCurrentMonth();
   const g = document.getElementById('wheel-g');
   g.style.transition = 'opacity 0.18s ease';
   g.style.opacity = '0';
@@ -438,24 +474,25 @@ function renderMonths() {
       const e = angle + WIDTHS[i] - GAP_DEG/2;
       const m = (s+e)/2;
       const outerR = MONTH_RADII[i];
-      const state = i < cur ? 'unlocked' : i === cur ? 'current' : 'locked';
+      const state = getMonthState(i); // 'pre' | 'unlocked' | 'current' | 'locked'
+      const cssState = state === 'pre' ? 'locked' : state; // pre renders same as locked
       const d = petalPath(s, e, INNER_R, outerR);
 
       const grp = document.createElementNS('http://www.w3.org/2000/svg','g');
-      grp.setAttribute('class', `slice-group ${state}`);
+      grp.setAttribute('class', `slice-group ${cssState}`);
 
       const path = document.createElementNS('http://www.w3.org/2000/svg','path');
       path.setAttribute('d', d);
       path.setAttribute('fill', PALETTE[i]);
       path.setAttribute('class','slice-path');
-      if (state === 'current') {
+      if (cssState === 'current') {
         path.setAttribute('stroke','rgba(255,255,255,0.38)');
         path.setAttribute('stroke-width','1');
         path.setAttribute('filter','url(#glow-soft)');
       }
       grp.appendChild(path);
 
-      if (state !== 'locked') {
+      if (cssState !== 'locked') {
         const gR = outerR - 16;
         const sp = e - s;
         const [g1x,g1y] = polar(gR, s + sp*0.22);
@@ -479,12 +516,12 @@ function renderMonths() {
       txt.setAttribute('class','slice-label');
       txt.setAttribute('transform',`rotate(${m+90},${lx},${ly})`);
       txt.setAttribute('fill',
-        state==='locked'  ? 'var(--text-dim)' :
-        state==='current' ? 'var(--text-white)' : 'var(--text-bright)');
+        cssState==='locked'  ? 'var(--text-dim)' :
+        cssState==='current' ? 'var(--text-white)' : 'var(--text-bright)');
       txt.textContent = label;
       grp.appendChild(txt);
 
-      if (state === 'current') {
+      if (cssState === 'current') {
         const [dx,dy] = polar(outerR+7, m);
         const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
         dot.setAttribute('cx',dx); dot.setAttribute('cy',dy);
@@ -571,6 +608,10 @@ function confirmDate() {
   renderMonths();
   setTimeout(() => { fb.textContent = ''; }, 3000);
 }
+
+// ── Block zoom ──
+document.addEventListener('wheel', e => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
+document.addEventListener('keydown', e => { if (e.ctrlKey && ['+','-','=','0'].includes(e.key)) e.preventDefault(); });
 
 // ── Init ──
 document.addEventListener('DOMContentLoaded', () => {
