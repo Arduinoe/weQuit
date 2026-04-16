@@ -553,11 +553,24 @@ let navMonth = null;
 let navWeek  = null;
 
 const WEEK_NAMES  = ['W1','W2','W3','W4'];
-const DAY_NAMES   = ['LUN','MAR','MER','GIO','VEN','SAB','DOM'];
+const ALL_DAY_NAMES = ['LUN','MAR','MER','GIO','VEN','SAB','DOM'];
 const WEEK_RADII  = [210,192,220,198];
 const DAY_RADII   = [208,188,218,196,212,186,222];
 const RAW_W4 = [28,24,30,26];
 const RAW_W7 = [16,14,17,13,15,14,17];
+
+// Returns the 7 day labels starting from the actual weekday of the quit date
+// e.g. if quit on Wednesday, labels = ['MER','GIO','VEN','SAB','DOM','LUN','MAR']
+function getDayLabels() {
+  const quitDayOfWeek = quitDate.getDay(); // 0=Sun,1=Mon,...,6=Sat
+  // Convert to Mon-based index (0=Mon...6=Sun)
+  const monBased = (quitDayOfWeek + 6) % 7;
+  const rotated = [];
+  for (let i = 0; i < 7; i++) {
+    rotated.push(ALL_DAY_NAMES[(monBased + i) % 7]);
+  }
+  return rotated;
+}
 const WIDTHS4 = (() => { const s=RAW_W4.reduce((a,b)=>a+b,0); return RAW_W4.map(w=>w/s*(360-4*GAP_DEG)); })();
 const WIDTHS7 = (() => { const s=RAW_W7.reduce((a,b)=>a+b,0); return RAW_W7.map(w=>w/s*(360-7*GAP_DEG)); })();
 
@@ -568,7 +581,11 @@ function setCenterLabel(text) {
   document.getElementById('center-label').textContent = text;
 }
 
-function renderSubWheel({ labels, radii, widths, currentIdx, onClickIdx }) {
+function renderSubWheel({ labels, radii, widths, currentIdx, completedIdx, onClickIdx }) {
+  // completedIdx: all days <= this index are unlocked (done)
+  // currentIdx: today — also shown as unlocked but with glow
+  // If completedIdx undefined, fall back for weeks
+  const lastDone = completedIdx !== undefined ? completedIdx : currentIdx - 1;
   const g = document.getElementById('wheel-g');
   g.style.transition = 'opacity 0.18s ease';
   g.style.opacity = '0';
@@ -582,7 +599,7 @@ function renderSubWheel({ labels, radii, widths, currentIdx, onClickIdx }) {
       const e = angle + widths[i] - GAP_DEG/2;
       const m = (s+e)/2;
       const outerR = radii[i % radii.length];
-      const cssState = i < currentIdx ? 'unlocked' : i === currentIdx ? 'current' : 'locked';
+      const cssState = i <= lastDone || i === currentIdx ? (i === currentIdx ? 'current' : 'unlocked') : 'locked';
       const d = petalPath(s, e, INNER_R, outerR);
 
       const grp = document.createElementNS('http://www.w3.org/2000/svg','g');
@@ -692,18 +709,22 @@ function showDays(monthIdx, weekIdx) {
   const qMonth = quitDate.getMonth();
   const monthsAhead = (monthIdx - qMonth + 12) % 12;
   const weeksAhead = monthsAhead * 4 + weekIdx;
-  const daysIntoWeek = daysElapsed - weeksAhead * 7;
-  let currentDay = Math.min(6, daysIntoWeek);
-  if (daysIntoWeek < 0) currentDay = -1;
+  // Day 0 of W1 = quit date itself
+  // Day 0 of W2 = quit date + 7, etc.
+  const dayOffsetStart = weeksAhead * 7; // first day of this week relative to quit
+  const daysIntoWeek = daysElapsed - dayOffsetStart;
+  const completedDays = Math.max(-1, Math.min(6, daysIntoWeek - 1));
+  const currentDayIdx = daysIntoWeek >= 0 ? Math.min(6, daysIntoWeek) : -1;
 
-  setCenterLabel('2190');
+  setCenterLabel('\u2190');
   setHint(`${MONTH_NAMES[monthIdx]} · ${WEEK_NAMES[weekIdx]}`);
 
   renderSubWheel({
-    labels: DAY_NAMES,
+    labels: getDayLabels(),
     radii: DAY_RADII,
     widths: WIDTHS7,
-    currentIdx: currentDay,
+    currentIdx: currentDayIdx,
+    completedIdx: completedDays,
     onClickIdx: null,
   });
 }
