@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>WeQuit</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c0c;
+    --center: #0c0c0c;
+    --border: #1e1e1e;
+    --text-dim: #3a3a3a;
+    --text-mid: #666;
+    --text-bright: #ccc;
+    --text-white: #fff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* ── Header ── */
+  .header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 28px 32px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    z-index: 10;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.35em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .breadcrumb {
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--text-mid);
+    letter-spacing: 0.08em;
+    text-align: right;
+    line-height: 1.6;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .breadcrumb.visible { opacity: 1; }
+  .breadcrumb span { color: var(--text-bright); font-weight: 500; }
+
+  /* ── Wheel ── */
+  .wheel-wrap {
+    position: relative;
+    width: min(88vw, 88vh, 520px);
+    height: min(88vw, 88vh, 520px);
+  }
+
+  svg.wheel {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* ── Slices ── */
+  .slice-group {
+    cursor: pointer;
+  }
+
+  .slice-path {
+    transition: filter 0.25s ease;
+  }
+
+  .slice-group:hover .slice-path {
+    filter: brightness(1.18) drop-shadow(0 0 10px rgba(255,255,255,0.15));
+  }
+
+  .slice-group.locked .slice-path {
+    opacity: 0.16;
+    filter: saturate(0.2) brightness(0.55);
+  }
+  .slice-group.locked { cursor: default; }
+
+  .slice-group.current .slice-path {
+    filter: drop-shadow(0 0 16px rgba(255,255,255,0.22));
+  }
+
+  /* ── Labels ── */
+  .slice-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.07em;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  /* ── Center ── */
+  .center-btn {
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+  .center-btn:hover circle { stroke: #444; }
+  .center-btn.hidden { opacity: 0; pointer-events: none; }
+
+  /* ── Footer ── */
+  .footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    padding: 0 32px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .streak {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    line-height: 1.7;
+  }
+  .streak strong {
+    display: block;
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-bright);
+    letter-spacing: 0.02em;
+  }
+
+  .hint {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-align: right;
+    font-style: italic;
+    font-weight: 300;
+    transition: opacity 0.4s ease;
+  }
+  .hint.hidden { opacity: 0; }
+
+  /* ── Transition overlay ── */
+  .transition-ring {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">WeQuit</div>
+  <div class="breadcrumb" id="breadcrumb"></div>
+</div>
+
+<div class="wheel-wrap">
+  <svg class="wheel" id="wheel" viewBox="0 0 500 500">
+    <defs>
+      <filter id="glow-soft">
+        <feGaussianBlur stdDeviation="4" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <g id="wheel-g"></g>
+    <!-- Center button -->
+    <g class="center-btn hidden" id="center-btn" onclick="zoomOut()">
+      <circle cx="250" cy="250" r="30" fill="#0c0c0c" stroke="#222" stroke-width="1.5"/>
+      <text x="250" y="247" text-anchor="middle" font-family="Syne" font-size="6.5" fill="#3a3a3a" letter-spacing="0.2em">BACK</text>
+      <text x="250" y="260" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">↩</text>
+    </g>
+  </svg>
+</div>
+
+<div class="footer">
+  <div class="streak">
+    <strong id="days-count">0</strong>
+    giorni senza fumare
+  </div>
+  <div class="hint" id="hint">tocca un mese</div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  CONFIG
+// ─────────────────────────────────────────────
+const CX = 250, CY = 250;
+const INNER_R = 44;
+const GAP_DEG = 4;
+
+// Quit date — change this to your real quit date
+const QUIT_DATE = new Date('2026-01-12');
+
+// Pastel palette — 12 colors cycling
+const PALETTE = [
+  '#f2c4b0','#b8d4c8','#f0e2a0','#c4b8d4',
+  '#a8c8d8','#f4b8c0','#b0ccd4','#d4c8a8',
+  '#c8d5b9','#f0c8a0','#b8c0d4','#d4b8c0',
+];
+
+const MONTH_NAMES = ['GEN','FEB','MAR','APR','MAG','GIU','LUG','AGO','SET','OTT','NOV','DIC'];
+const WEEK_NAMES  = ['W1','W2','W3','W4'];
+const DAY_NAMES   = ['LUN','MAR','MER','GIO','VEN','SAB','DOM'];
+
+// Variable outer radii for organic feel
+const MONTH_RADII = [212,194,228,196,218,190,224,202,214,192,232,200];
+const WEEK_RADII  = [210,192,220,198];
+const DAY_RADII   = [208,188,218,196,212,186,222];
+
+// Variable angular widths — organic asymmetry
+function makeWidths(n, base) {
+  // slight random-ish variation seeded per count
+  const seeds = {
+    12: [38,27,33,25,36,24,37,27,31,25,39,26],
+     4: [28,24,30,26],
+     7: [16,14,17,13,15,14,17],
+  };
+  const raw = seeds[n] || Array(n).fill(30);
+  const sum = raw.reduce((a,b)=>a+b,0);
+  const avail = 360 - n * GAP_DEG;
+  return raw.map(w => w / sum * avail);
+}
+
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+let level = 'months';   // 'months' | 'weeks' | 'days'
+let selectedMonth = null;
+let selectedWeek = null;
+
+// Calculate progress from quit date
+function getDaysSince() {
+  const now = new Date();
+  const diff = now - QUIT_DATE;
+  return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+}
+
+function getProgress() {
+  const days = getDaysSince();
+  const quitMonth = QUIT_DATE.getMonth();
+  const quitYear  = QUIT_DATE.getFullYear();
+  const now = new Date();
+
+  return {
+    totalDays: days,
+    // which month index (0-11) in our 12-month journey
+    currentMonthIdx: Math.min(11, Math.floor(days / 30)),
+    // which week within current month (0-3)
+    currentWeekIdx: Math.min(3, Math.floor((days % 30) / 7)),
+    // which day within current week (0-6)
+    currentDayIdx: Math.min(6, (days % 7)),
+  };
+}
+
+// ─────────────────────────────────────────────
+//  GEOMETRY
+// ─────────────────────────────────────────────
+function toRad(d){ return d * Math.PI / 180; }
+function polar(r, deg){ return [CX + r*Math.cos(toRad(deg)), CY + r*Math.sin(toRad(deg))]; }
+
+/**
+ * Build a petal path:
+ * - Narrows to a soft rounded tip at inner radius
+ * - Bellies outward at mid-radius
+ * - Closes with a rounded droplet cap at outer radius
+ * All in SVG space, centered at (CX,CY), pointing at angleDeg
+ */
+function petalPath(angleDeg, startDeg, endDeg, innerR, outerR) {
+  const span = endDeg - startDeg;
+  const mid = (startDeg + endDeg) / 2;
+
+  // Key radii
+  const bellyR = innerR + (outerR - innerR) * 0.52;
+  const shoulderR = innerR + (outerR - innerR) * 0.75;
+
+  // Half-widths at each level (in degrees)
+  const bellyHalf  = span * 0.44;
+  const shoulderHalf = span * 0.30;
+  const outerHalf  = span * 0.10; // very narrow at tip
+
+  // Points
+  const [oTip_x, oTip_y]   = polar(outerR, mid);                       // outer tip center
+  const [oL_x, oL_y]       = polar(shoulderR, mid - shoulderHalf);     // shoulder left
+  const [oR_x, oR_y]       = polar(shoulderR, mid + shoulderHalf);     // shoulder right
+  const [bL_x, bL_y]       = polar(bellyR,   mid - bellyHalf);         // belly left
+  const [bR_x, bR_y]       = polar(bellyR,   mid + bellyHalf);         // belly right
+  const [iL_x, iL_y]       = polar(innerR,   mid - span*0.18);         // inner left
+  const [iR_x, iR_y]       = polar(innerR,   mid + span*0.18);         // inner right
+  const [iTip_x, iTip_y]   = polar(innerR - 4, mid);                   // inner tip
+
+  // Outer tip cap control points
+  const capPull = (outerR - shoulderR) * 0.7;
+  const [cOL_x, cOL_y] = polar(outerR - capPull * 0.3, mid - shoulderHalf * 0.5);
+  const [cOR_x, cOR_y] = polar(outerR - capPull * 0.3, mid + shoulderHalf * 0.5);
+
+  return [
+    `M ${iL_x} ${iL_y}`,
+    // Left side up to outer
+    `C ${bL_x} ${bL_y}, ${oL_x} ${oL_y}, ${cOL_x} ${cOL_y}`,
+    // Outer rounded cap
+    `C ${oTip_x - (oTip_x - cOL_x)*0.2} ${oTip_y - (oTip_y - cOL_y)*0.2}, ${oTip_x} ${oTip_y}, ${oTip_x} ${oTip_y}`,
+    `C ${oTip_x} ${oTip_y}, ${oTip_x + (cOR_x - oTip_x)*0.2} ${oTip_y + (cOR_y - oTip_y)*0.2}, ${cOR_x} ${cOR_y}`,
+    // Right side down from outer
+    `C ${oR_x} ${oR_y}, ${bR_x} ${bR_y}, ${iR_x} ${iR_y}`,
+    // Inner rounded tip
+    `C ${iR_x} ${iR_y}, ${iTip_x + (iR_x-iTip_x)*0.3} ${iTip_y + (iR_y-iTip_y)*0.3}, ${iTip_x} ${iTip_y}`,
+    `C ${iTip_x + (iL_x-iTip_x)*0.3} ${iTip_y + (iL_y-iTip_y)*0.3}, ${iL_x} ${iL_y}, ${iL_x} ${iL_y}`,
+    `Z`
+  ].join(' ');
+}
+
+// ─────────────────────────────────────────────
+//  RENDER
+// ─────────────────────────────────────────────
+function renderWheel(config) {
+  const { slices, radii, currentIdx, onClickIdx, labelOffset } = config;
+  const n = slices.length;
+  const widths = makeWidths(n);
+  const g = document.getElementById('wheel-g');
+
+  // Animate out
+  g.style.transition = 'opacity 0.2s ease';
+  g.style.opacity = '0';
+
+  setTimeout(() => {
+    g.innerHTML = '';
+    let angle = -90; // start at top
+
+    slices.forEach((label, i) => {
+      const startDeg = angle + GAP_DEG / 2;
+      const endDeg   = angle + widths[i] - GAP_DEG / 2;
+      const midDeg   = (startDeg + endDeg) / 2;
+      const outerR   = radii[i % radii.length];
+
+      // State
+      let state = 'locked';
+      if (i < currentIdx) state = 'unlocked';
+      if (i === currentIdx) state = 'current';
+
+      const color = PALETTE[i % PALETTE.length];
+      const d = petalPath(midDeg, startDeg, endDeg, INNER_R, outerR);
+
+      // Group
+      const grp = document.createElementNS('http://www.w3.org/2000/svg','g');
+      grp.setAttribute('class', `slice-group ${state}`);
+      if (state !== 'locked' && onClickIdx) {
+        grp.addEventListener('click', () => onClickIdx(i));
+      }
+
+      // Path
+      const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d', d);
+      path.setAttribute('fill', color);
+      path.setAttribute('class', 'slice-path');
+      if (state === 'current') {
+        path.setAttribute('stroke', 'rgba(255,255,255,0.45)');
+        path.setAttribute('stroke-width', '1');
+        path.setAttribute('filter', 'url(#glow-soft)');
+      }
+      grp.appendChild(path);
+
+      // Groove highlight
+      if (state !== 'locked') {
+        const gR = outerR - 18;
+        const span = endDeg - startDeg;
+        const [g1x,g1y] = polar(gR, startDeg + span*0.2);
+        const [g2x,g2y] = polar(gR, endDeg   - span*0.2);
+        const [gmx,gmy] = polar(gR + 6, midDeg);
+        const groove = document.createElementNS('http://www.w3.org/2000/svg','path');
+        groove.setAttribute('d',`M ${g1x} ${g1y} Q ${gmx} ${gmy} ${g2x} ${g2y}`);
+        groove.setAttribute('fill','none');
+        groove.setAttribute('stroke','rgba(255,255,255,0.18)');
+        groove.setAttribute('stroke-width','0.8');
+        groove.setAttribute('stroke-linecap','round');
+        grp.appendChild(groove);
+      }
+
+      // Label
+      const lR = outerR + (labelOffset || 20);
+      const [lx,ly] = polar(lR, midDeg);
+      const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+      txt.setAttribute('x', lx);
+      txt.setAttribute('y', ly);
+      txt.setAttribute('text-anchor','middle');
+      txt.setAttribute('dominant-baseline','middle');
+      txt.setAttribute('class','slice-label');
+      txt.setAttribute('transform',`rotate(${midDeg + 90}, ${lx}, ${ly})`);
+      txt.setAttribute('fill', state === 'locked' ? '#2a2a2a' : state === 'current' ? '#fff' : '#888');
+      txt.textContent = label;
+      grp.appendChild(txt);
+
+      // Current dot
+      if (state === 'current') {
+        const [dx,dy] = polar(outerR + 7, midDeg);
+        const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        dot.setAttribute('cx',dx); dot.setAttribute('cy',dy);
+        dot.setAttribute('r','3');
+        dot.setAttribute('fill','#fff');
+        dot.setAttribute('opacity','0.8');
+        grp.appendChild(dot);
+      }
+
+      g.appendChild(grp);
+      angle += widths[i];
+    });
+
+    // Animate in
+    g.style.transition = 'opacity 0.35s ease';
+    g.style.opacity = '1';
+
+    // Re-append center button on top
+    const cb = document.getElementById('center-btn');
+    cb.parentNode.appendChild(cb);
+
+  }, 220);
+}
+
+// ─────────────────────────────────────────────
+//  NAVIGATION
+// ─────────────────────────────────────────────
+function showMonths() {
+  level = 'months';
+  selectedMonth = null;
+  selectedWeek = null;
+  const p = getProgress();
+
+  document.getElementById('center-btn').classList.add('hidden');
+  document.getElementById('breadcrumb').classList.remove('visible');
+  document.getElementById('hint').classList.remove('hidden');
+  document.getElementById('hint').textContent = 'tocca un mese';
+
+  renderWheel({
+    slices: MONTH_NAMES,
+    radii: MONTH_RADII,
+    currentIdx: p.currentMonthIdx,
+    labelOffset: 20,
+    onClickIdx: (i) => {
+      if (i <= p.currentMonthIdx) showWeeks(i);
+    }
+  });
+}
+
+function showWeeks(monthIdx) {
+  level = 'weeks';
+  selectedMonth = monthIdx;
+  const p = getProgress();
+
+  // Which weeks are unlocked in this month?
+  let currentWeek = -1;
+  if (monthIdx < p.currentMonthIdx) currentWeek = 3; // all done
+  if (monthIdx === p.currentMonthIdx) currentWeek = p.currentWeekIdx;
+
+  document.getElementById('center-btn').classList.remove('hidden');
+  document.getElementById('hint').classList.add('hidden');
+
+  const bc = document.getElementById('breadcrumb');
+  bc.classList.add('visible');
+  bc.innerHTML = `${MONTH_NAMES[monthIdx]}<br><span>settimane</span>`;
+
+  renderWheel({
+    slices: WEEK_NAMES,
+    radii: WEEK_RADII,
+    currentIdx: currentWeek,
+    labelOffset: 18,
+    onClickIdx: (i) => {
+      if (monthIdx < p.currentMonthIdx || i <= p.currentWeekIdx) {
+        showDays(monthIdx, i);
+      }
+    }
+  });
+}
+
+function showDays(monthIdx, weekIdx) {
+  level = 'days';
+  selectedMonth = monthIdx;
+  selectedWeek = weekIdx;
+  const p = getProgress();
+
+  // Which days are unlocked?
+  let currentDay = -1;
+  if (monthIdx < p.currentMonthIdx) currentDay = 6;
+  else if (monthIdx === p.currentMonthIdx) {
+    if (weekIdx < p.currentWeekIdx) currentDay = 6;
+    else if (weekIdx === p.currentWeekIdx) currentDay = p.currentDayIdx;
+  }
+
+  document.getElementById('center-btn').classList.remove('hidden');
+  document.getElementById('hint').classList.add('hidden');
+
+  const bc = document.getElementById('breadcrumb');
+  bc.classList.add('visible');
+  bc.innerHTML = `${MONTH_NAMES[monthIdx]} · ${WEEK_NAMES[weekIdx]}<br><span>giorni</span>`;
+
+  renderWheel({
+    slices: DAY_NAMES,
+    radii: DAY_RADII,
+    currentIdx: currentDay,
+    labelOffset: 18,
+    onClickIdx: null // leaf level
+  });
+}
+
+function zoomOut() {
+  if (level === 'days') {
+    showWeeks(selectedMonth);
+  } else if (level === 'weeks') {
+    showMonths();
+  }
+}
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const p = getProgress();
+  document.getElementById('days-count').textContent = p.totalDays;
+  showMonths();
+});
+</script>
+</body>
+</html>
