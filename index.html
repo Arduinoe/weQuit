@@ -8,52 +8,16 @@
 <title>WeQuit</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0c0c0c;
-    --bg-panel: #141414;
-    --border: #222;
-    --text-dim: #333;
-    --text-mid: #666;
-    --text-bright: #aaa;
-    --text-white: #eee;
-    --center-fill: #0c0c0c;
-    --center-stroke: #222;
-  }
-
-  body.theme-white {
-    --bg: #f5f5f5; --bg-panel: #ececec; --border: #ddd;
-    --text-dim: #bbb; --text-mid: #999; --text-bright: #555; --text-white: #111;
-    --center-fill: #f5f5f5; --center-stroke: #ddd;
-  }
-  body.theme-lightgrey {
-    --bg: #e0e0e0; --bg-panel: #d4d4d4; --border: #c4c4c4;
-    --text-dim: #aaa; --text-mid: #888; --text-bright: #444; --text-white: #111;
-    --center-fill: #e0e0e0; --center-stroke: #c4c4c4;
-  }
-  body.theme-anthracite {
-    --bg: #3a3a3a; --bg-panel: #2e2e2e; --border: #4a4a4a;
-    --text-dim: #555; --text-mid: #777; --text-bright: #bbb; --text-white: #eee;
-    --center-fill: #3a3a3a; --center-stroke: #4a4a4a;
-  }
-  body.theme-darkgrey {
-    --bg: #222; --bg-panel: #1a1a1a; --border: #333;
-    --text-dim: #3a3a3a; --text-mid: #666; --text-bright: #aaa; --text-white: #ddd;
-    --center-fill: #222; --center-stroke: #333;
-  }
-  body.theme-titanium {
-    --bg: #8e9aad; --bg-panel: #7e8a9d; --border: #9eaabb;
-    --text-dim: #6a7a8d; --text-mid: #aab8c8; --text-bright: #dde4ee; --text-white: #f0f4f8;
-    --center-fill: #8e9aad; --center-stroke: #9eaabb;
-  }
-  body.theme-black {
-    --bg: #000; --bg-panel: #0a0a0a; --border: #1a1a1a;
-    --text-dim: #222; --text-mid: #555; --text-bright: #999; --text-white: #ddd;
-    --center-fill: #000; --center-stroke: #1a1a1a;
-  }
-
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-
   body {
+    --bg: #f5f5f5;
+    --bg-panel: #ececec;
+    --border: #ddd;
+    --text-dim: #bbb;
+    --text-mid: #999;
+    --text-bright: #555;
+    --text-white: #111;
+    --center-fill: #f5f5f5;
+    --center-stroke: #ddd;
     background: var(--bg);
     display: flex;
     flex-direction: column;
@@ -66,6 +30,8 @@
     transition: background 0.4s ease;
   }
 
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
   .header {
     position: fixed; top:0; left:0; right:0;
     padding: 26px 28px 0;
@@ -76,7 +42,7 @@
   }
 
   .logo {
-    font-size: 11px; font-weight: 600;
+    font-size: 13px; font-weight: 600;
     letter-spacing: 0.3em;
     color: var(--text-dim);
     text-transform: uppercase;
@@ -91,8 +57,8 @@
   }
   .settings-btn:hover { opacity: 0.6; }
   .settings-btn span {
-    display: block; width: 18px; height: 1px;
-    background: var(--text-mid);
+    display: block; width: 18px; height: 1.5px;
+    background: var(--text-bright);
     transition: background 0.4s ease;
   }
 
@@ -117,7 +83,7 @@
   }
   .slice-label {
     font-family: 'Roboto Mono', monospace;
-    font-size: 9px; font-weight: 400;
+    font-size: 11px; font-weight: 400;
     letter-spacing: 0.1em; pointer-events: none;
   }
 
@@ -131,19 +97,19 @@
     pointer-events: none;
   }
   .streak {
-    font-size: 10px; font-weight: 300;
+    font-size: 12px; font-weight: 300;
     color: var(--text-mid);
     letter-spacing: 0.08em; line-height: 1.8;
     transition: color 0.4s ease;
   }
   .streak strong {
-    display: block; font-size: 28px; font-weight: 500;
+    display: block; font-size: 30px; font-weight: 500;
     color: var(--text-white); letter-spacing: -0.02em;
     line-height: 1; margin-bottom: 4px;
     transition: color 0.4s ease;
   }
   .hint {
-    font-size: 9px; font-weight: 300;
+    font-size: 11px; font-weight: 300;
     color: var(--text-dim); letter-spacing: 0.12em;
     transition: color 0.4s ease;
   }
@@ -177,7 +143,7 @@
     transition: border-color 0.4s ease;
   }
   .panel-title {
-    font-size: 10px; font-weight: 500;
+    font-size: 12px; font-weight: 500;
     letter-spacing: 0.28em; color: var(--text-bright);
     text-transform: uppercase; transition: color 0.4s ease;
   }
@@ -195,7 +161,7 @@
   }
 
   .setting-label {
-    font-size: 9px; font-weight: 500;
+    font-size: 11px; font-weight: 500;
     letter-spacing: 0.22em; color: var(--text-mid);
     text-transform: uppercase; margin-bottom: 14px;
     transition: color 0.4s ease;
@@ -225,7 +191,7 @@
   }
   .date-select-wrap { display: flex; flex-direction: column; gap: 5px; }
   .date-select-label {
-    font-size: 8px; letter-spacing: 0.15em;
+    font-size: 10px; letter-spacing: 0.15em;
     color: var(--text-dim); text-transform: uppercase;
     transition: color 0.4s ease;
   }
@@ -247,7 +213,7 @@
     background: transparent; border: 1px solid var(--border);
     color: var(--text-bright);
     font-family: 'Roboto Mono', monospace;
-    font-size: 9px; letter-spacing: 0.2em;
+    font-size: 11px; letter-spacing: 0.2em;
     text-transform: uppercase; cursor: pointer;
     border-radius: 6px;
     transition: border-color 0.2s, color 0.2s;
@@ -255,9 +221,210 @@
   .date-confirm:hover { border-color: var(--text-bright); color: var(--text-white); }
 
   .date-feedback {
-    font-size: 9px; color: var(--text-mid);
+    font-size: 11px; color: var(--text-mid);
     letter-spacing: 0.08em; margin-top: 9px; min-height: 14px;
     transition: color 0.4s ease;
+  }
+
+  /* ── ONBOARDING ── */
+  .onboarding {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    z-index: 200;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 36px;
+    transition: opacity 0.4s ease;
+  }
+  .onboarding.visible { display: flex; }
+  .onboarding.hidden { opacity: 0; pointer-events: none; }
+
+  .ob-step {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    gap: 40px;
+  }
+  .ob-step.active { display: flex; }
+
+  .ob-counter {
+    font-size: 10px; letter-spacing: 0.25em;
+    color: var(--text-mid); text-transform: uppercase;
+  }
+
+  .ob-question {
+    font-size: 20px; font-weight: 300;
+    color: var(--text-white); line-height: 1.5;
+    letter-spacing: 0.02em;
+  }
+
+  .ob-value {
+    font-size: 42px; font-weight: 500;
+    color: var(--text-white); letter-spacing: -0.02em;
+    text-align: center;
+    transition: color 0.4s;
+  }
+  .ob-value span {
+    font-size: 16px; font-weight: 300;
+    color: var(--text-mid); margin-left: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .ob-slider {
+    -webkit-appearance: none;
+    width: 100%; height: 2px;
+    background: var(--border);
+    outline: none; border-radius: 1px;
+  }
+  .ob-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--text-bright);
+    cursor: pointer;
+    border: none;
+  }
+
+  .ob-input-row {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ob-input {
+    background: transparent;
+    border: none; border-bottom: 1px solid var(--border);
+    color: var(--text-white);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 32px; font-weight: 300;
+    width: 120px; text-align: center;
+    padding: 4px 0; outline: none;
+    transition: border-color 0.2s;
+  }
+  .ob-input:focus { border-color: var(--text-bright); }
+  .ob-unit {
+    font-size: 14px; font-weight: 300;
+    color: var(--text-mid); letter-spacing: 0.1em;
+  }
+
+  .ob-next {
+    align-self: flex-end;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-bright);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; cursor: pointer;
+    padding: 12px 24px; border-radius: 6px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .ob-next:hover { border-color: var(--text-bright); color: var(--text-white); }
+
+  /* ── CONFIRM DIALOG ── */
+  .confirm-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 150; opacity: 0; pointer-events: none;
+    transition: opacity 0.25s ease;
+    display: flex; align-items: center; justify-content: center;
+    padding: 32px;
+  }
+  .confirm-overlay.open { opacity: 1; pointer-events: all; }
+  .confirm-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    max-width: 280px; width: 100%;
+    display: flex; flex-direction: column; gap: 20px;
+    transform: translateY(10px);
+    transition: transform 0.3s ease, background 0.4s, border-color 0.4s;
+  }
+  .confirm-overlay.open .confirm-card { transform: translateY(0); }
+  .confirm-text {
+    font-size: 13px; font-weight: 300;
+    color: var(--text-bright); line-height: 1.65;
+    letter-spacing: 0.02em;
+  }
+  .confirm-btns { display: flex; gap: 10px; justify-content: flex-end; }
+  .confirm-btn {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-mid);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase; cursor: pointer;
+    padding: 9px 16px; border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .confirm-btn:hover { border-color: var(--text-bright); color: var(--text-white); }
+  .confirm-btn.primary { border-color: var(--text-bright); color: var(--text-white); }
+  #sparkle-canvas {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  /* ── FACT POPUP ── */
+  .fact-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 110;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+    display: flex; align-items: center; justify-content: center;
+    padding: 32px;
+  }
+  .fact-overlay.open { opacity: 1; pointer-events: all; }
+
+  .fact-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 36px 28px;
+    max-width: 320px;
+    width: 100%;
+    display: flex; flex-direction: column; gap: 20px;
+    transform: translateY(12px);
+    transition: transform 0.35s cubic-bezier(0.32,0.72,0,1), background 0.4s, border-color 0.4s;
+  }
+  .fact-overlay.open .fact-card { transform: translateY(0); }
+
+  .fact-type {
+    font-size: 9px; letter-spacing: 0.28em;
+    color: var(--text-dim); text-transform: uppercase;
+    transition: color 0.4s;
+  }
+  .fact-text {
+    font-size: 15px; font-weight: 300;
+    color: var(--text-white); line-height: 1.65;
+    letter-spacing: 0.02em;
+    transition: color 0.4s;
+  }
+  .fact-close {
+    align-self: flex-end;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: var(--text-mid); cursor: pointer;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    border: none; background: none;
+    font-family: 'Roboto Mono', monospace;
+    padding: 4px 0;
+  }
+  .fact-close:hover { color: var(--text-white); }
+
+  .fact-stats {
+    display: flex; gap: 20px;
+    padding-top: 4px;
+    border-top: 1px solid var(--border);
+  }
+  .fact-stat { display: flex; flex-direction: column; gap: 4px; }
+  .fact-stat-value {
+    font-size: 22px; font-weight: 500;
+    color: var(--text-white); letter-spacing: -0.02em;
+  }
+  .fact-stat-label {
+    font-size: 9px; font-weight: 300;
+    color: var(--text-mid); letter-spacing: 0.1em;
   }
 </style>
 </head>
@@ -281,9 +448,9 @@
     <g id="wheel-g"></g>
     <g id="center-g" style="cursor:pointer" onclick="zoomOut()">
       <circle cx="250" cy="250" r="30" fill="var(--center-fill)" stroke="var(--center-stroke)" stroke-width="1.5"/>
-      <text id="center-label" x="250" y="254" text-anchor="middle"
-        font-family="Roboto Mono" font-size="6"
-        fill="var(--text-dim)" letter-spacing="0.2em">WEQUIT</text>
+      <text id="center-label" x="250" y="255" text-anchor="middle"
+        font-family="Roboto Mono" font-size="8"
+        fill="var(--text-dim)" letter-spacing="0.15em">WEQUIT</text>
     </g>
   </svg>
 </div>
@@ -294,6 +461,85 @@
     giorni senza fumare
   </div>
   <div class="hint">tocca un mese</div>
+</div>
+
+<!-- Onboarding -->
+<div class="onboarding" id="onboarding">
+
+  <!-- Step 1: anni da fumatore -->
+  <div class="ob-step active" id="ob-step-1">
+    <div class="ob-counter">1 / 4</div>
+    <div class="ob-question">Da quanti anni fumi?</div>
+    <div class="ob-value" id="ob-val-1">10 <span>anni</span></div>
+    <input type="range" class="ob-slider" id="ob-slider-1" min="1" max="50" value="10"
+      oninput="document.getElementById('ob-val-1').innerHTML=this.value+' <span>anni</span>'">
+    <button class="ob-next" onclick="obNext(1)">avanti &#8594;</button>
+  </div>
+
+  <!-- Step 2: sigarette al giorno -->
+  <div class="ob-step" id="ob-step-2">
+    <div class="ob-counter">2 / 4</div>
+    <div class="ob-question">Quante sigarette fumi al giorno?</div>
+    <div class="ob-value" id="ob-val-2">10 <span>al giorno</span></div>
+    <input type="range" class="ob-slider" id="ob-slider-2" min="1" max="60" value="10"
+      oninput="document.getElementById('ob-val-2').innerHTML=this.value+' <span>al giorno</span>'">
+    <button class="ob-next" onclick="obNext(2)">avanti &#8594;</button>
+  </div>
+
+  <!-- Step 3: costo pacchetto -->
+  <div class="ob-step" id="ob-step-3">
+    <div class="ob-counter">3 / 4</div>
+    <div class="ob-question">Quanto costa il tuo pacchetto?</div>
+    <div class="ob-input-row">
+      <input type="number" class="ob-input" id="ob-price" value="5.50" step="0.10" min="1" max="30">
+      <div class="ob-unit">&#8364; / pacchetto</div>
+    </div>
+    <button class="ob-next" onclick="obNext(3)">avanti &#8594;</button>
+  </div>
+
+  <!-- Step 4: data di inizio -->
+  <div class="ob-step" id="ob-step-4">
+    <div class="ob-counter">4 / 4</div>
+    <div class="ob-question">Da quando hai smesso?</div>
+    <div style="display:flex; gap:8px; width:100%;">
+      <select class="date-select" id="ob-day" style="flex:1.5;"></select>
+      <select class="date-select" id="ob-month" style="flex:2.5;"></select>
+      <select class="date-select" id="ob-year" style="flex:2;"></select>
+    </div>
+    <button class="ob-next" onclick="obFinish()">inizia &#8594;</button>
+  </div>
+
+</div>
+
+<!-- Confirm dialog -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-card">
+    <div class="confirm-text">Sei sicuro di voler cambiare la data? I progressi rimarranno, ma le ricompense si ricalcoleranno.</div>
+    <div class="confirm-btns">
+      <button class="confirm-btn" onclick="closeConfirm()">annulla</button>
+      <button class="confirm-btn primary" onclick="confirmDateChange()">conferma</button>
+    </div>
+  </div>
+</div>
+
+<canvas id="sparkle-canvas"></canvas>
+
+<div class="fact-overlay" id="fact-overlay" onclick="closeFact(event)">
+  <div class="fact-card">
+    <div class="fact-type" id="fact-type">settimana</div>
+    <div class="fact-text" id="fact-text">Placeholder fact.</div>
+    <div class="fact-stats" id="fact-stats" style="display:none;">
+      <div class="fact-stat">
+        <div class="fact-stat-value" id="stat-cigs">—</div>
+        <div class="fact-stat-label">sigarette non fumate</div>
+      </div>
+      <div class="fact-stat">
+        <div class="fact-stat-value" id="stat-euros">—</div>
+        <div class="fact-stat-label">risparmiati</div>
+      </div>
+    </div>
+    <button class="fact-close" onclick="closeFact()">chiudi</button>
+  </div>
 </div>
 
 <div class="panel-overlay" id="overlay" onclick="closePanel()"></div>
@@ -307,29 +553,29 @@
 
     <div>
       <div class="setting-label">Sfondo</div>
-      <div class="swatches">
-        <div class="swatch" data-theme="white"
-          style="background:#f5f5f5;" onclick="setTheme('white')">
+      <div class="swatches" id="bg-picker">
+        <div class="swatch active" data-bg="white"
+          style="background:#f5f5f5;" onclick="setDefaultBg('white','#f5f5f5')">
           <span class="swatch-label" style="color:#aaa;">bianco</span>
         </div>
-        <div class="swatch" data-theme="lightgrey"
-          style="background:#e0e0e0;" onclick="setTheme('lightgrey')">
+        <div class="swatch" data-bg="lightgrey"
+          style="background:#e0e0e0;" onclick="setDefaultBg('lightgrey','#e0e0e0')">
           <span class="swatch-label" style="color:#999;">chiaro</span>
         </div>
-        <div class="swatch" data-theme="anthracite"
-          style="background:#3a3a3a;" onclick="setTheme('anthracite')">
+        <div class="swatch" data-bg="anthracite"
+          style="background:#3a3a3a;" onclick="setDefaultBg('anthracite','#3a3a3a')">
           <span class="swatch-label" style="color:#888;">antracite</span>
         </div>
-        <div class="swatch" data-theme="darkgrey"
-          style="background:#222;" onclick="setTheme('darkgrey')">
+        <div class="swatch" data-bg="darkgrey"
+          style="background:#222;" onclick="setDefaultBg('darkgrey','#222')">
           <span class="swatch-label" style="color:#666;">scuro</span>
         </div>
-        <div class="swatch" data-theme="titanium"
-          style="background:#8e9aad;" onclick="setTheme('titanium')">
+        <div class="swatch" data-bg="titanium"
+          style="background:#8e9aad;" onclick="setDefaultBg('titanium','#8e9aad')">
           <span class="swatch-label" style="color:#dde4ee;">titanio</span>
         </div>
-        <div class="swatch active" data-theme="black"
-          style="background:#000; border-color:#555;" onclick="setTheme('black')">
+        <div class="swatch" data-bg="black"
+          style="background:#000; border-color:#555;" onclick="setDefaultBg('black','#000')">
           <span class="swatch-label" style="color:#444;">nero</span>
         </div>
       </div>
@@ -361,11 +607,14 @@
 <script>
 const CX = 250, CY = 250, INNER_R = 44, GAP_DEG = 4;
 
-const PALETTE = [
-  '#f2c4b0','#b8d4c8','#f0e2a0','#c4b8d4',
-  '#a8c8d8','#f4b8c0','#b0ccd4','#d4c8a8',
-  '#c8d5b9','#f0c8a0','#b8c0d4','#d4b8c0',
-];
+const PALETTES = {
+  default: [
+    '#f2c4b0','#b8d4c8','#f0e2a0','#c4b8d4',
+    '#a8c8d8','#f4b8c0','#b0ccd4','#d4c8a8',
+    '#c8d5b9','#f0c8a0','#b8c0d4','#d4b8c0',
+  ],
+};
+let PALETTE = PALETTES.default;
 const MONTH_NAMES = ['GEN','FEB','MAR','APR','MAG','GIU','LUG','AGO','SET','OTT','NOV','DIC'];
 const MONTH_NAMES_FULL = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
                           'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
@@ -381,7 +630,7 @@ let quitDate = (() => {
   return s ? new Date(s) : new Date('2026-01-01');
 })();
 
-let currentTheme = localStorage.getItem('wq_theme') || 'black';
+
 
 function getDays() {
   return Math.max(0, Math.floor((new Date() - quitDate) / 86400000));
@@ -491,8 +740,8 @@ function renderMonths() {
       path.setAttribute('fill', PALETTE[i]);
       path.setAttribute('class','slice-path');
       if (cssState === 'current') {
-        path.setAttribute('stroke','rgba(255,255,255,0.38)');
-        path.setAttribute('stroke-width','1');
+        path.setAttribute('stroke', '#e8c840');
+        path.setAttribute('stroke-width','2');
         path.setAttribute('filter','url(#glow-soft)');
       }
       grp.appendChild(path);
@@ -506,7 +755,7 @@ function renderMonths() {
         const groove = document.createElementNS('http://www.w3.org/2000/svg','path');
         groove.setAttribute('d',`M ${g1x} ${g1y} Q ${gmx} ${gmy} ${g2x} ${g2y}`);
         groove.setAttribute('fill','none');
-        groove.setAttribute('stroke','rgba(255,255,255,0.15)');
+        groove.setAttribute('stroke', cssVar('--text-bright') + '33');
         groove.setAttribute('stroke-width','0.8');
         groove.setAttribute('stroke-linecap','round');
         grp.appendChild(groove);
@@ -521,8 +770,8 @@ function renderMonths() {
       txt.setAttribute('class','slice-label');
       txt.setAttribute('transform',`rotate(${m+90},${lx},${ly})`);
       txt.setAttribute('fill',
-        cssState==='locked'  ? 'var(--text-dim)' :
-        cssState==='current' ? 'var(--text-white)' : 'var(--text-bright)');
+        cssState==='locked'  ? cssVar('--text-dim') :
+        cssState==='current' ? cssVar('--text-white') : cssVar('--text-bright'));
       txt.textContent = label;
       grp.appendChild(txt);
 
@@ -531,8 +780,14 @@ function renderMonths() {
         const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
         dot.setAttribute('cx',dx); dot.setAttribute('cy',dy);
         dot.setAttribute('r','3');
-        dot.setAttribute('fill','rgba(255,255,255,0.7)');
+        dot.setAttribute('fill', cssVar('--text-white'));
         grp.appendChild(dot);
+      }
+
+      // ⊕ only on fully completed months (unlocked), not current
+      if (cssState === 'unlocked') {
+        const [px,py] = polar(outerR + 22, m + 12);
+        addPlusButton(grp, px, py, 'month', i);
       }
 
       g.appendChild(grp);
@@ -578,10 +833,15 @@ function setHint(text) {
   document.querySelector('.hint').textContent = text;
 }
 function setCenterLabel(text) {
-  document.getElementById('center-label').textContent = text;
+  const el = document.getElementById('center-label');
+  el.textContent = text;
+  const isBack = text === 'WEQUIT';
+  el.setAttribute('fill', isBack ? 'var(--text-dim)' : 'var(--text-bright)');
+  el.setAttribute('font-size', isBack ? '8' : '20');
+  el.setAttribute('y', isBack ? '255' : '257');
 }
 
-function renderSubWheel({ labels, radii, widths, currentIdx, completedIdx, onClickIdx }) {
+function renderSubWheel({ labels, radii, widths, currentIdx, completedIdx, onClickIdx, factLevel, factOffset }) {
   // completedIdx: all days <= this index are unlocked (done)
   // currentIdx: today — also shown as unlocked but with glow
   // If completedIdx undefined, fall back for weeks
@@ -613,8 +873,8 @@ function renderSubWheel({ labels, radii, widths, currentIdx, completedIdx, onCli
       path.setAttribute('fill', PALETTE[i % PALETTE.length]);
       path.setAttribute('class','slice-path');
       if (cssState === 'current') {
-        path.setAttribute('stroke','rgba(255,255,255,0.38)');
-        path.setAttribute('stroke-width','1');
+        path.setAttribute('stroke', '#e8c840');
+        path.setAttribute('stroke-width','2');
         path.setAttribute('filter','url(#glow-soft)');
       }
       grp.appendChild(path);
@@ -628,7 +888,7 @@ function renderSubWheel({ labels, radii, widths, currentIdx, completedIdx, onCli
         const groove = document.createElementNS('http://www.w3.org/2000/svg','path');
         groove.setAttribute('d',`M ${g1x} ${g1y} Q ${gmx} ${gmy} ${g2x} ${g2y}`);
         groove.setAttribute('fill','none');
-        groove.setAttribute('stroke','rgba(255,255,255,0.15)');
+        groove.setAttribute('stroke', cssVar('--text-bright') + '33');
         groove.setAttribute('stroke-width','0.8');
         groove.setAttribute('stroke-linecap','round');
         grp.appendChild(groove);
@@ -643,8 +903,8 @@ function renderSubWheel({ labels, radii, widths, currentIdx, completedIdx, onCli
       txt.setAttribute('class','slice-label');
       txt.setAttribute('transform',`rotate(${m+90},${lx},${ly})`);
       txt.setAttribute('fill',
-        cssState==='locked'  ? 'var(--text-dim)' :
-        cssState==='current' ? 'var(--text-white)' : 'var(--text-bright)');
+        cssState==='locked'  ? cssVar('--text-dim') :
+        cssState==='current' ? cssVar('--text-white') : cssVar('--text-bright'));
       txt.textContent = label;
       grp.appendChild(txt);
 
@@ -653,8 +913,15 @@ function renderSubWheel({ labels, radii, widths, currentIdx, completedIdx, onCli
         const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
         dot.setAttribute('cx',dx); dot.setAttribute('cy',dy);
         dot.setAttribute('r','3');
-        dot.setAttribute('fill','rgba(255,255,255,0.7)');
+        dot.setAttribute('fill', cssVar('--text-white'));
         grp.appendChild(dot);
+      }
+
+      // ⊕ only on fully completed weeks (unlocked), never on days
+      if (cssState === 'unlocked' && factLevel && factLevel !== 'day') {
+        const [px,py] = polar(outerR + 22, m + 12);
+        const factIdx = factOffset !== undefined ? factOffset + i : i;
+        addPlusButton(grp, px, py, factLevel, factIdx);
       }
 
       g.appendChild(grp);
@@ -688,7 +955,7 @@ function showWeeks(monthIdx) {
   let currentWeek = Math.min(3, weeksIntoMonth);
   if (monthsAhead > Math.floor(daysElapsed / 30)) currentWeek = -1; // future month
 
-  setCenterLabel('2190');
+  setCenterLabel('\u21B5');
   setHint(`${MONTH_NAMES[monthIdx]} · tocca una settimana`);
 
   renderSubWheel({
@@ -697,6 +964,8 @@ function showWeeks(monthIdx) {
     widths: WIDTHS4,
     currentIdx: currentWeek,
     onClickIdx: (wi) => showDays(monthIdx, wi),
+    factLevel: 'week',
+    factOffset: monthsAhead * 4,
   });
 }
 
@@ -716,7 +985,7 @@ function showDays(monthIdx, weekIdx) {
   const completedDays = Math.max(-1, Math.min(6, daysIntoWeek - 1));
   const currentDayIdx = daysIntoWeek >= 0 ? Math.min(6, daysIntoWeek) : -1;
 
-  setCenterLabel('\u2190');
+  setCenterLabel('\u21B5');
   setHint(`${MONTH_NAMES[monthIdx]} · ${WEEK_NAMES[weekIdx]}`);
 
   renderSubWheel({
@@ -741,13 +1010,42 @@ function zoomOut() {
 }
 
 // ── Theme ──
-function setTheme(t) {
-  document.body.className = 'theme-' + t;
-  currentTheme = t;
-  localStorage.setItem('wq_theme', t);
-  document.querySelectorAll('.swatch').forEach(s => {
-    s.classList.toggle('active', s.dataset.theme === t);
+const DEFAULT_BG_VARS = {
+  white:      { bg:'#f5f5f5', panel:'#ececec', border:'#ddd', dim:'#bbb', mid:'#999', bright:'#555', white:'#111' },
+  lightgrey:  { bg:'#e0e0e0', panel:'#d4d4d4', border:'#c4c4c4', dim:'#aaa', mid:'#888', bright:'#444', white:'#111' },
+  anthracite: { bg:'#3a3a3a', panel:'#2e2e2e', border:'#4a4a4a', dim:'#555', mid:'#777', bright:'#bbb', white:'#eee' },
+  darkgrey:   { bg:'#222',    panel:'#1a1a1a', border:'#333',   dim:'#3a3a3a', mid:'#666', bright:'#aaa', white:'#ddd' },
+  titanium:   { bg:'#8e9aad', panel:'#7e8a9d', border:'#9eaabb', dim:'#6a7a8d', mid:'#aab8c8', bright:'#dde4ee', white:'#f0f4f8' },
+  black:      { bg:'#000',    panel:'#0a0a0a', border:'#1a1a1a', dim:'#222', mid:'#555', bright:'#999', white:'#ddd' },
+};
+
+let currentDefaultBg = localStorage.getItem('wq_default_bg') || 'white';
+
+function applyDefaultBgVars(bg) {
+  const v = DEFAULT_BG_VARS[bg];
+  if (!v) return;
+  document.body.style.background = v.bg;
+  document.body.style.setProperty('--bg', v.bg);
+  document.body.style.setProperty('--bg-panel', v.panel);
+  document.body.style.setProperty('--border', v.border);
+  document.body.style.setProperty('--text-dim', v.dim);
+  document.body.style.setProperty('--text-mid', v.mid);
+  document.body.style.setProperty('--text-bright', v.bright);
+  document.body.style.setProperty('--text-white', v.white);
+  document.body.style.setProperty('--center-fill', v.bg);
+  document.body.style.setProperty('--center-stroke', v.border);
+}
+
+function setDefaultBg(bg) {
+  currentDefaultBg = bg;
+  localStorage.setItem('wq_default_bg', bg);
+  applyDefaultBgVars(bg);
+  document.querySelectorAll('#bg-picker .swatch').forEach(s => {
+    s.classList.toggle('active', s.dataset.bg === bg);
   });
+  if (navLevel === 'months') renderMonths();
+  else if (navLevel === 'weeks') showWeeks(navMonth);
+  else if (navLevel === 'days') showDays(navMonth, navWeek);
 }
 
 // ── Panel ──
@@ -807,6 +1105,345 @@ function confirmDate() {
   setTimeout(() => { fb.textContent = ''; }, 3000);
 }
 
+// ── CSS variable reader (so SVG elements respect theme) ──
+function cssVar(name) {
+  return getComputedStyle(document.body).getPropertyValue(name).trim();
+}
+
+// ── SPARKLE ENGINE ──
+const sparkCanvas = document.getElementById('sparkle-canvas');
+const sparkCtx = sparkCanvas.getContext('2d');
+let sparks = [], sparkRaf = null, sparkFrame = 0;
+
+function resizeSparkCanvas() {
+  sparkCanvas.width  = window.innerWidth;
+  sparkCanvas.height = window.innerHeight;
+}
+resizeSparkCanvas();
+window.addEventListener('resize', resizeSparkCanvas);
+
+const SPARK_COLORS = ['#f2c4b0','#b8d4c8','#f0e2a0','#c4b8d4','#a8c8d8','#f4b8c0','#fff','#fff','#eee'];
+
+class Spark {
+  constructor(x, y, vx, vy, color, size, life) {
+    this.x=x; this.y=y; this.vx=vx; this.vy=vy;
+    this.color=color; this.size=size; this.life=life; this.maxLife=life;
+  }
+  update() {
+    this.x+=this.vx; this.y+=this.vy;
+    this.vy+=0.07; this.vx*=0.98; this.life--;
+  }
+  draw(ctx) {
+    ctx.globalAlpha = this.life/this.maxLife;
+    ctx.fillStyle = this.color;
+    ctx.fillRect(Math.round(this.x/2)*2, Math.round(this.y/2)*2, this.size, this.size);
+    ctx.globalAlpha = 1;
+  }
+}
+
+function fireSparkles() {
+  sparks = []; sparkFrame = 0;
+  if (sparkRaf) cancelAnimationFrame(sparkRaf);
+  animateSparks();
+}
+
+function animateSparks() {
+  sparkCtx.clearRect(0,0,sparkCanvas.width,sparkCanvas.height);
+  sparkFrame++;
+  const W = sparkCanvas.width, H = sparkCanvas.height;
+
+  // Rain from top
+  if (sparkFrame < 55) {
+    const count = sparkFrame < 22 ? 7 : 3;
+    for (let i=0; i<count; i++) {
+      const x = Math.random()*W;
+      const size = [2,2,4,4,6][Math.floor(Math.random()*5)];
+      sparks.push(new Spark(x,-4,(Math.random()-.5)*1.5,2+Math.random()*4,
+        SPARK_COLORS[Math.floor(Math.random()*SPARK_COLORS.length)],size,55+Math.random()*30));
+    }
+  }
+  // Center burst first 12 frames
+  if (sparkFrame < 13) {
+    for (let i=0;i<6;i++) {
+      const a=Math.random()*Math.PI*2, sp=3+Math.random()*5;
+      sparks.push(new Spark(W/2,H/2,Math.cos(a)*sp,Math.sin(a)*sp,
+        SPARK_COLORS[Math.floor(Math.random()*SPARK_COLORS.length)],
+        [2,4][Math.floor(Math.random()*2)],45+Math.random()*20));
+    }
+  }
+
+  sparks = sparks.filter(s=>s.life>0&&s.y<H+10);
+  sparks.forEach(s=>{s.update();s.draw(sparkCtx);});
+
+  if (sparks.length>0||sparkFrame<55) sparkRaf=requestAnimationFrame(animateSparks);
+  else sparkCtx.clearRect(0,0,sparkCanvas.width,sparkCanvas.height);
+}
+
+// ── FACT DATA ──
+const FACTS = {
+  month: [
+    { type: 'mese 1', text: 'La nicotina è completamente sparita dal tuo corpo. I recettori cerebrali che si erano riorganizzati attorno alla dipendenza iniziano a tornare alla normalità. Il desiderio fisico acuto si attenua — quello che senti adesso è più abitudine che chimica.' },
+    { type: 'mese 2', text: 'La circolazione periferica è migliorata in modo misurabile. Mani e piedi sono più caldi. Il rischio di infarto è già sceso rispetto al giorno zero. Il tuo cuore sta lavorando con meno sforzo.' },
+    { type: 'mese 3', text: 'La capacità polmonare è migliorata fino al 30%. Non è che i polmoni fossero bloccati — è che ora funzionano come dovrebbero. Probabilmente lo senti salendo le scale o facendo sport.' },
+    { type: 'mese 4', text: 'Le ciglia bronchiali — i microscopici filamenti che spazzano via i detriti dai polmoni — si sono rigenerate. Il catrame accumulato inizia ad essere espulso attivamente. La tosse mattutina, se ce l\'avevi, non è un peggioramento: è il corpo che fa pulizia.' },
+    { type: 'mese 5', text: 'Il cuore batte in modo più efficiente. La frequenza cardiaca a riposo si è abbassata, il sangue è meno viscoso. Anni di infiammazione silente nei vasi sanguigni stanno cedendo il passo.' },
+    { type: 'mese 6', text: 'La tosse cronica e l\'affanno sono significativamente ridotti. I polmoni producono meno muco difensivo perché non ne hanno più bisogno. Sei a metà del primo anno.' },
+    { type: 'mese 7', text: 'Il senso del gusto e dell\'olfatto sono completamente ripristinati. La maggior parte dei fumatori non si rende conto di quanto li avesse persi — finché non li ritrova. Il cibo sa di più. L\'aria sa di qualcosa.' },
+    { type: 'mese 8', text: 'Per anni il fumo ha introdotto monossido di carbonio nel sangue, una molecola che si lega all\'emoglobina al posto dell\'ossigeno. Ora i tuoi globuli rossi trasportano ossigeno puro al 100%. Ogni organo, ogni muscolo, ogni cellula ne beneficia.' },
+    { type: 'mese 9', text: 'Il sistema immunitario è tornato reattivo. Il rischio di infezioni respiratorie — bronchiti, polmoniti — è calato drasticamente. Il corpo ha ripreso a difendersi da solo.' },
+    { type: 'mese 10', text: 'Nei bronchi, le cellule precancerose accumulate anni di fumo iniziano ad essere sostituite da tessuto sano. Non è visibile, non si sente — ma sta succedendo.' },
+    { type: 'mese 11', text: 'L\'energia fisica è aumentata in modo misurabile. Non è placebo — è capacità aerobica reale, recuperata cellula per cellula nel corso di questi mesi. Senti una riserva che non ricordavi di avere.' },
+    { type: 'mese 12', text: 'Il rischio di malattia coronarica è sceso della metà rispetto a quando fumavi. In un anno il tuo corpo ha fatto qualcosa di straordinario. Ufficialmente, biologicamente, sei un non fumatore.' },
+  ],
+  week: [
+    { type: 'settimana 1',  text: 'Le prime 72 ore sono le più dure chimicamente. Il picco di astinenza fisica — irritabilità, ansia, difficoltà di concentrazione — avviene in questa finestra. Se sei arrivato alla settimana 1, hai già attraversato la parte più brutale. Il resto è neurologia, abitudine, e tempo.' },
+    { type: 'settimana 2',  text: 'Il flusso sanguigno alle gengive è migliorato. I dentisti riconoscono i fumatori dalla salute gengivale — gengive più pallide, più ritirate, più prone al sanguinamento. Tutto questo sta cambiando. La bocca è uno dei primi posti dove il corpo mostra i segni della ripresa.' },
+    { type: 'settimana 3',  text: 'Il cervello ha già iniziato a ridurre il numero di recettori nicotinici nelle sinapsi. Non è metafora: si sta letteralmente ricablando, riportando la densità recettoriale verso quella di un non fumatore. È un processo lento, ma è già in corso.' },
+    { type: 'settimana 4',  text: 'Hai completato il primo mese. Gli studi sulla cessazione mostrano che chi supera le quattro settimane ha una probabilità radicalmente più alta di non ricominciare. Non perché diventi facile — ma perché il corpo e la mente hanno trovato un nuovo equilibrio di base.' },
+    { type: 'settimana 5',  text: 'Il monossido di carbonio nel sangue è azzerato da settimane. Quando fumavi, questa molecola si legava all\'emoglobina al posto dell\'ossigeno, riducendo la capacità di trasporto del sangue. Ora i tuoi globuli rossi fanno il loro lavoro al 100%.' },
+    { type: 'settimana 6',  text: 'Le sigarette contengono ammoniaca — aggiunta deliberatamente dai produttori per accelerare l\'assorbimento della nicotina nel cervello. Non è un effetto collaterale: è un\'ingegneria della dipendenza. Stai smettendo da qualcosa costruito esattamente per renderti difficile smettere.' },
+    { type: 'settimana 7',  text: 'La pressione arteriosa si è stabilizzata su valori strutturalmente più bassi. Ogni battito del cuore muove il sangue con meno resistenza. Nel lungo periodo, questa differenza si misura in anni di vita.' },
+    { type: 'settimana 8',  text: 'Due mesi. Il tessuto polmonare ha una capacità di rigenerazione che sorprende anche i medici. Non torna mai al 100% — le cicatrici più profonde restano — ma continua a migliorare per anni, anche dopo decenni di fumo. Il corpo non smette mai di provare a ripararsi.' },
+    { type: 'settimana 9',  text: 'I capillari periferici si sono dilatati. La circolazione nelle estremità — mani, piedi, dita — è migliorata in modo misurabile. Le ferite guariscono più velocemente. I fumatori guariscono più lentamente dopo interventi chirurgici: questo è il motivo, e ora è cambiato.' },
+    { type: 'settimana 10', text: 'Nel 1977, Voyager 1 è stato lanciato nello spazio. Oggi è l\'oggetto costruito dall\'uomo più lontano dalla Terra — oltre 23 miliardi di chilometri. Trasmette ancora segnali. Ci vuole più di 22 ore perché un segnale arrivi da lì a qui. Alcune cose, una volta lanciate nella giusta direzione, continuano semplicemente ad andare.' },
+    { type: 'settimana 11', text: 'Il rischio di ictus inizia a scendere verso quello di un non fumatore. Il fumo accelera la formazione di placche nelle arterie cerebrali e aumenta la probabilità di coaguli. Entrambi i meccanismi si stanno attenuando.' },
+    { type: 'settimana 12', text: 'Tre mesi. I craving improvvisi — quelli che arrivano senza motivo, spesso legati a luoghi o situazioni — sono statisticamente al punto più basso dall\'inizio. Il cervello sta dissociando i vecchi trigger dalla risposta automatica.' },
+    { type: 'settimana 13', text: 'Le papille gustative si rinnovano completamente ogni 10-14 giorni. Da quando hai smesso, sono già cambiate circa sei volte. Quello che senti mangiando adesso è più vicino a quello che sentiva il tuo corpo prima che iniziassi a fumare.' },
+    { type: 'settimana 14', text: 'Il fungo Ophiocordyceps infetta le formiche, le manipola cerebralmente e le costringe ad arrampicarsi in cima agli steli delle piante prima di ucciderle — per diffondere le spore dall\'alto. La dipendenza da nicotina funziona in modo non completamente diverso: modifica il comportamento per perpetuare se stessa. Entrambi hanno perso.' },
+    { type: 'settimana 15', text: 'Il DNA delle cellule polmonari accumula danni dal fumo che, se non riparati, possono portare a mutazioni. Da quando hai smesso, i meccanismi di riparazione del DNA — che esistono in ogni cellula — sono tornati a lavorare senza essere costantemente sopraffatti.' },
+    { type: 'settimana 16', text: 'Quattro mesi. La maggior parte delle persone a questo punto riferisce che il pensiero della sigaretta è diventato occasionale — non costante. Non è sforzo di volontà: è il cervello che ha smesso di mandare il segnale ogni pochi minuti.' },
+    { type: 'settimana 17', text: 'Il fegato metabolizza i farmaci in modo più efficiente. Il fumo induce enzimi epatici che accelerano il metabolismo di molte sostanze — caffè incluso. Ora il tuo caffè dura di più nel sangue. Potresti aver bisogno di meno.' },
+    { type: 'settimana 18', text: 'Nel 1859, un maiale selvatico rubò e mangiò 18 kg di grano appartenenti a un colono americano sull\'isola di San Juan. La cosa degenerò in una crisi diplomatica tra Stati Uniti e Gran Bretagna che durò dodici anni. Il maiale fu l\'unica vittima. Si chiama la Guerra del Maiale e non è un\'invenzione.' },
+    { type: 'settimana 19', text: 'La fertilità — sia maschile che femminile — migliora significativamente dopo tre-quattro mesi senza fumo. Il fumo danneggia la qualità degli spermatozoi e interferisce con il ciclo ormonale femminile. Entrambi i processi si stanno normalizzando.' },
+    { type: 'settimana 20', text: 'Il collagene è la proteina strutturale più abbondante nel corpo umano — costituisce un terzo di tutta la proteina corporea. Il fumo ne inibisce la sintesi e accelera la degradazione. Da mesi la produzione è tornata normale. La pelle, le articolazioni, i vasi sanguigni ne beneficiano tutti.' },
+    { type: 'settimana 21', text: 'Cinque mesi e una settimana. Le fibre muscolari ricevono più ossigeno durante l\'esercizio. La resistenza fisica è aumentata anche se non hai cambiato nulla nel tuo stile di vita. Immagina cosa succederebbe se ti allenassi davvero.' },
+    { type: 'settimana 22', text: 'Il Sole perde circa 4 milioni di tonnellate di massa ogni secondo attraverso la fusione nucleare. Lo fa da 4,6 miliardi di anni e continuerà per altri 5 miliardi. Alcune perdite, in scala giusta, sono sostenibili. La tua — smettere di fumare — lo è ancora di più.' },
+    { type: 'settimana 23', text: 'Il sonno è migliorato strutturalmente. La nicotina è uno stimolante che frammenta i cicli REM. Senza di essa, il cervello entra in sonno profondo più facilmente e ci resta più a lungo. Il riposo che senti adesso è diverso.' },
+    { type: 'settimana 24', text: 'Sei mesi esatti. Sei a metà del primo anno. Il tuo corpo ha fatto più lavoro di riparazione silenziosa in questi 180 giorni di quanto qualsiasi esame medico riesca a mostrare. La maggior parte avviene a livello cellulare, invisibile, continuo.' },
+    { type: 'settimana 25', text: 'I capillari della retina beneficiano del miglioramento circolatorio. Il fumo è un fattore di rischio per la degenerazione maculare — la principale causa di cecità negli adulti. Quel rischio si sta abbassando.' },
+    { type: 'settimana 26', text: 'La foresta di Pando, nello Utah, sembra un bosco di tremuli. In realtà è un singolo organismo — 40.000 alberi connessi dallo stesso sistema radicale, 80.000 anni di età, 6 milioni di kg di massa. L\'individuo più grande del pianeta è una cosa sola che sembra molte.' },
+    { type: 'settimana 27', text: 'Il rischio di cataratta — accelerato dal fumo attraverso lo stress ossidativo del cristallino — inizia a scendere verso la media della popolazione. Gli occhi sono tra gli organi più sensibili ai benefici della cessazione.' },
+    { type: 'settimana 28', text: 'Sette mesi. Le ghiandole salivari producono saliva di composizione migliore — più ricca di enzimi protettivi, con pH più equilibrato. La salute del cavo orale continua a migliorare in modo che nessun collutorio avrebbe potuto replicare.' },
+    { type: 'settimana 29', text: 'Il fumo riduce la densità ossea interferendo con il metabolismo del calcio e riducendo i livelli di estrogeni. Da quando hai smesso, il riassorbimento osseo anomalo si è fermato. Non recupererai quello già perso, ma non perderai altro.' },
+    { type: 'settimana 30', text: 'I neuroni dopaminergici hanno quasi completato il loro reset. Il sistema della ricompensa cerebrale — quello che il fumo aveva dirottato per anni — sta tornando a rispondere normalmente agli stimoli naturali. Le cose piacevoli fanno più effetto.' },
+    { type: 'settimana 31', text: 'Nel 1982, un uomo di nome Larry Walters legò 45 palloncini meteorologici alla sua sedia da giardino e salì a 4.900 metri. Aveva con sé un walkie-talkie, una birra e un fucile ad aria compressa per bucare i palloncini. Atterrò in una zona residenziale. La FAA lo multò di 1.500 dollari. Disse che era qualcosa che doveva fare.' },
+    { type: 'settimana 32', text: 'Otto mesi. Il rischio di diabete di tipo 2 — aumentato dal fumo attraverso la resistenza all\'insulina — è tornato verso la media della popolazione. Il pancreas sta lavorando con meno stress.' },
+    { type: 'settimana 33', text: 'Le corde vocali si sono riprese dall\'infiammazione cronica causata dal calore e dalle sostanze irritanti del fumo. La voce ha recuperato gamma e chiarezza. Chi ti conosce da prima probabilmente lo ha già notato, anche senza dirtelo.' },
+    { type: 'settimana 34', text: 'Il più grande vulcano del sistema solare non è sulla Terra. È Olympus Mons su Marte — alto 22 km, largo 600 km. La sua cima si trova praticamente fuori dall\'atmosfera marziana. La Terra ha vulcani più attivi, ma niente di così monumentalmente inutile e magnifico.' },
+    { type: 'settimana 35', text: 'Il sistema linfatico — la rete di difesa immunitaria che scorre parallela al sistema circolatorio — funziona meglio. I linfonodi non sono più in lieve attivazione cronica, sempre pronti a rispondere a un\'aggressione che non finiva mai.' },
+    { type: 'settimana 36', text: 'Nove mesi. Lo stesso tempo necessario per sviluppare un essere umano da zero. In parallelo, senza che tu te ne accorgessi, il tuo corpo ha fatto una rigenerazione silenziosa e sistematica. Non sei la stessa persona — cellula per cellula, letteralmente.' },
+    { type: 'settimana 37', text: 'I capelli crescono più sani. Il fumo riduce la circolazione al cuoio capelluto e l\'apporto di nutrienti ai follicoli piliferi. Da mesi questo è cambiato. La differenza non è drammatica, ma è reale.' },
+    { type: 'settimana 38', text: 'Nel 1518 a Strasburgo, circa 400 persone iniziarono a ballare per strada senza motivo apparente. Continuarono per giorni — alcune per settimane. Alcune morirono per fatica, infarto o ictus. Non sappiamo ancora con certezza cosa causò la Pestilenza della Danza. Alcune dipendenze non hanno una spiegazione razionale semplice.' },
+    { type: 'settimana 39', text: 'Il fumo è la principale causa prevenibile di morte nei paesi sviluppati — responsabile di circa 8 milioni di morti l\'anno nel mondo. Tu sei uscito da quella statistica. Non è retorica: è epidemiologia.' },
+    { type: 'settimana 40', text: 'Dieci mesi. Il cervello ha completato la maggior parte del rewiring neurochimico. I pattern di pensiero e comportamento legati alla dipendenza si sono indeboliti strutturalmente. Non sono spariti — ma non sono più il percorso di default.' },
+    { type: 'settimana 41', text: 'La pelle si rinnova completamente ogni 27 giorni circa. Dall\'inizio di questo anno è già cambiata quindici volte. La versione attuale è più ossigenata, produce più collagene, invecchia più lentamente.' },
+    { type: 'settimana 42', text: 'I corvi possono riconoscere volti umani e ricordano chi li ha trattati male per anni — passando l\'informazione anche ai loro figli. Sono stati documentati casi di corvi che si vendicano di ricercatori che li avevano catturati. È una buona idea trattarli bene.' },
+    { type: 'settimana 43', text: 'Il rischio di cancro alla cavità orale, alla gola e all\'esofago — direttamente e proporzionalmente correlato agli anni di fumo — è già significativamente più basso. Non è azzerato, ma la traiettoria è inequivocabile.' },
+    { type: 'settimana 44', text: 'Undici mesi. La soglia statistica oltre la quale la maggior parte delle ricadute non avviene è stata superata da tempo. Non sei fuori pericolo per sempre — la dipendenza lascia tracce neurologiche durature — ma sei in territorio completamente diverso rispetto al giorno zero.' },
+    { type: 'settimana 45', text: 'Il cuore ha battuto circa 32 milioni di volte dall\'inizio di questo anno. Ognuno di quei battiti è avvenuto in un sistema cardiovascolare progressivamente più sano, con arterie più elastiche e sangue meno viscoso.' },
+    { type: 'settimana 46', text: 'Nel 1859 una tempesta solare — l\'Evento Carrington — fu così potente da mandare in tilt i telegrafi di tutto il mondo. Alcuni operatori ricevettero scosse elettriche; altri continuarono a trasmettere a macchine staccate, alimentate dall\'aurora boreale. Se succedesse oggi, farebbe saltare l\'intera rete elettrica globale.' },
+    { type: 'settimana 47', text: 'Il sistema nervoso autonomo — quello che regola respiro, battito cardiaco, digestione, temperatura — ha ricalibrato i suoi parametri di base. Non è qualcosa che si decide o si allena: succede, lentamente, quando togli la fonte di disturbo.' },
+    { type: 'settimana 48', text: 'L\'ultima settimana del primo anno. Quello che hai fatto non è normale — la maggior parte di chi prova a smettere ci riesce solo dopo diversi tentativi. Il corpo ha una memoria, e la memoria di questo anno — di ogni giorno di questo anno — rimane.' },
+  ],
+  day: Array.from({length:365}, (_,i) => ({ type:`giorno ${i+1}`, text:'Ogni giorno senza fumo è un giorno guadagnato.' })),
+};
+
+// ── STAT CALCULATIONS ──
+function getCumulativeStats(weekIdx) {
+  // weekIdx is 0-based total week number since quit
+  const totalDays = (weekIdx + 1) * 7;
+  const cigsPerDay = parseInt(localStorage.getItem('wq_ob_cigs') || '10');
+  const price      = parseFloat(localStorage.getItem('wq_ob_price') || '5');
+  const cigsPerPack = 20;
+  const cigsNotSmoked = Math.round(totalDays * cigsPerDay);
+  const eurosSaved = ((cigsNotSmoked / cigsPerPack) * price).toFixed(2);
+  return { cigsNotSmoked, eurosSaved };
+}
+
+// ── LAST SEEN tracking (for new unlock detection) ──
+function getSeenKey() { return 'wq_seen_' + quitDate.toDateString(); }
+function getSeenDays() { return parseInt(localStorage.getItem(getSeenKey()) || '0'); }
+function setSeenDays(d) { localStorage.setItem(getSeenKey(), d); }
+
+function checkNewUnlock() {
+  const days = getDays();
+  const seen = getSeenDays();
+  if (days > seen) {
+    setSeenDays(days);
+    setTimeout(() => {
+      fireSparkles();
+    }, 400);
+  }
+}
+
+// ── FACT POPUP ──
+function openFact(level, idx) {
+  const db = FACTS[level];
+  const entry = db[Math.min(idx, db.length-1)];
+  document.getElementById('fact-type').textContent = entry.type;
+  document.getElementById('fact-text').textContent  = entry.text;
+
+  const statsEl = document.getElementById('fact-stats');
+  if (level === 'week') {
+    const { cigsNotSmoked, eurosSaved } = getCumulativeStats(idx);
+    document.getElementById('stat-cigs').textContent   = cigsNotSmoked.toLocaleString('it-IT');
+    document.getElementById('stat-euros').textContent  = '\u20ac' + eurosSaved;
+    statsEl.style.display = 'flex';
+  } else {
+    statsEl.style.display = 'none';
+  }
+
+  document.getElementById('fact-overlay').classList.add('open');
+}
+
+function closeFact(e) {
+  if (e && e.target !== document.getElementById('fact-overlay') && !e.target.classList.contains('fact-close')) return;
+  document.getElementById('fact-overlay').classList.remove('open');
+}
+
+// ── PLUS BUTTON helper ──
+function addPlusButton(g, cx, cy, level, idx) {
+  const r = 8;
+  const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  circle.setAttribute('cx', cx); circle.setAttribute('cy', cy);
+  circle.setAttribute('r', r);
+  circle.setAttribute('fill', cssVar('--bg'));
+  circle.setAttribute('stroke', cssVar('--text-mid'));
+  circle.setAttribute('stroke-width', '1');
+  circle.setAttribute('style','cursor:pointer');
+
+  const plus = document.createElementNS('http://www.w3.org/2000/svg','text');
+  plus.setAttribute('x', cx); plus.setAttribute('y', cy);
+  plus.setAttribute('text-anchor','middle');
+  plus.setAttribute('dominant-baseline','middle');
+  plus.setAttribute('font-family','Roboto Mono');
+  plus.setAttribute('font-size','10');
+  plus.setAttribute('fill', cssVar('--text-mid'));
+  plus.setAttribute('style','cursor:pointer;pointer-events:none');
+  plus.textContent = '+';
+
+  const handler = (e) => { e.stopPropagation(); openFact(level, idx); };
+  circle.addEventListener('click', handler);
+
+  g.appendChild(circle);
+  g.appendChild(plus);
+}
+
+// ── ONBOARDING ──
+function obNext(step) {
+  document.getElementById(`ob-step-${step}`).classList.remove('active');
+  document.getElementById(`ob-step-${step+1}`).classList.add('active');
+}
+
+function obFinish() {
+  const years   = parseInt(document.getElementById('ob-slider-1').value);
+  const cigsDay = parseInt(document.getElementById('ob-slider-2').value);
+  const price   = parseFloat(document.getElementById('ob-price').value) || 5.5;
+  const d = +document.getElementById('ob-day').value;
+  const m = +document.getElementById('ob-month').value - 1;
+  const y = +document.getElementById('ob-year').value;
+  const date = new Date(y, m, d);
+
+  localStorage.setItem('wq_ob_years',  years);
+  localStorage.setItem('wq_ob_cigs',   cigsDay);
+  localStorage.setItem('wq_ob_price',  price);
+  localStorage.setItem('wq_ob_done',   '1');
+
+  // Save quit date
+  if (!isNaN(date.getTime()) && date <= new Date()) {
+    quitDate = date;
+    localStorage.setItem('wq_date', date.toISOString());
+    // Sync settings dropdowns
+    document.getElementById('sel-day').value   = date.getDate();
+    document.getElementById('sel-month').value = date.getMonth() + 1;
+    document.getElementById('sel-year').value  = date.getFullYear();
+  }
+
+  document.getElementById('days-count').textContent = getDays();
+  renderMonths();
+
+  const ob = document.getElementById('onboarding');
+  ob.classList.add('hidden');
+  setTimeout(() => ob.classList.remove('visible'), 400);
+}
+
+function populateObDateSelectors() {
+  const selDay   = document.getElementById('ob-day');
+  const selMonth = document.getElementById('ob-month');
+  const selYear  = document.getElementById('ob-year');
+  const today    = new Date();
+
+  for (let d=1; d<=31; d++) {
+    const o=document.createElement('option');
+    o.value=d; o.textContent=String(d).padStart(2,'0');
+    selDay.appendChild(o);
+  }
+  MONTH_NAMES_FULL.forEach((mn,i) => {
+    const o=document.createElement('option');
+    o.value=i+1; o.textContent=mn;
+    selMonth.appendChild(o);
+  });
+  const ny=today.getFullYear();
+  for (let yr=ny; yr>=ny-4; yr--) {
+    const o=document.createElement('option');
+    o.value=yr; o.textContent=yr;
+    selYear.appendChild(o);
+  }
+  selDay.value   = today.getDate();
+  selMonth.value = today.getMonth()+1;
+  selYear.value  = today.getFullYear();
+}
+
+function checkOnboarding() {
+  const ob = document.getElementById('onboarding');
+  if (!localStorage.getItem('wq_ob_done')) {
+    populateObDateSelectors();
+    ob.classList.add('visible');
+  } else {
+    ob.classList.remove('visible');
+  }
+}
+
+// ── CONFIRM DATE CHANGE ──
+function openConfirm() {
+  document.getElementById('confirm-overlay').classList.add('open');
+}
+function closeConfirm() {
+  document.getElementById('confirm-overlay').classList.remove('open');
+}
+function confirmDateChange() {
+  closeConfirm();
+  applyDateChange();
+}
+
+// Split confirmDate into two parts
+function confirmDate() {
+  // validate first
+  const d = +document.getElementById('sel-day').value;
+  const m = +document.getElementById('sel-month').value - 1;
+  const y = +document.getElementById('sel-year').value;
+  const date = new Date(y, m, d);
+  const fb = document.getElementById('date-feedback');
+  if (isNaN(date.getTime())) { fb.textContent = 'data non valida'; return; }
+  if (date > new Date()) { fb.textContent = 'la data \u00e8 nel futuro'; return; }
+  fb.textContent = '';
+  openConfirm();
+}
+
+function applyDateChange() {
+  const d = +document.getElementById('sel-day').value;
+  const m = +document.getElementById('sel-month').value - 1;
+  const y = +document.getElementById('sel-year').value;
+  const date = new Date(y, m, d);
+  quitDate = date;
+  localStorage.setItem('wq_date', date.toISOString());
+  const days = getDays();
+  document.getElementById('days-count').textContent = days;
+  document.getElementById('date-feedback').textContent = `salvato \u00b7 ${days} giorni fa`;
+  renderMonths();
+  setTimeout(() => { document.getElementById('date-feedback').textContent = ''; }, 3000);
+}
+
 // ── Block zoom ──
 document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
 document.addEventListener('wheel', e => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
@@ -814,10 +1451,18 @@ document.addEventListener('keydown', e => { if (e.ctrlKey && ['+','-','=','0'].i
 
 // ── Init ──
 document.addEventListener('DOMContentLoaded', () => {
-  setTheme(currentTheme);
+  // DEV: reset onboarding ogni caricamento
+  localStorage.removeItem('wq_ob_done');
+  localStorage.removeItem('wq_date');
+  applyDefaultBgVars(currentDefaultBg);
+  document.querySelectorAll('#bg-picker .swatch').forEach(s => {
+    s.classList.toggle('active', s.dataset.bg === currentDefaultBg);
+  });
+  checkOnboarding();
   populateDateSelectors();
   document.getElementById('days-count').textContent = getDays();
   renderMonths();
+  checkNewUnlock();
 });
 </script>
 </body>
