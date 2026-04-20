@@ -1451,9 +1451,6 @@ document.addEventListener('keydown', e => { if (e.ctrlKey && ['+','-','=','0'].i
 
 // ── Init ──
 document.addEventListener('DOMContentLoaded', () => {
-  // DEV: reset onboarding ogni caricamento
-  localStorage.removeItem('wq_ob_done');
-  localStorage.removeItem('wq_date');
   applyDefaultBgVars(currentDefaultBg);
   document.querySelectorAll('#bg-picker .swatch').forEach(s => {
     s.classList.toggle('active', s.dataset.bg === currentDefaultBg);
